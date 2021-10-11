@@ -15,4 +15,12 @@ Created on Mon Oct 11 08:50:48 2021
 ##
 ## Created: Fall 2020
 ## Author: John.Fay@duke.edu (for ENV859)
+## Student: eb351@duke.edu
 ##---------------------------------------------------------------------
+
+# Import modules
+import sys, os, arcpy
+
+# Set input variables (Hard-wired)
+inputFile = 'C:\\Users\\eniko\\Documents\\Duuuuuke\\2021-22\\Advanced GIS\\ARGOSTracking\\data\\ARGOSdata\\1997dg.txt'
+outputFC = "C:\\Users\\eniko\\Documents\\Duuuuuke\\2021-22\\Advanced GIS\\ARGOSTracking\\scratch\\ARGOStrack.shp"
