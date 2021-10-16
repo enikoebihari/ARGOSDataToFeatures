@@ -31,7 +31,7 @@ outputFC = "C:\\Users\\eniko\\Documents\\Duuuuuke\\2021-22\\Advanced GIS\\ARGOST
 
 # Create feature class to which we will add features
 outPath, outFile = os.path.split(outputFC)
-arcpy.management.CreateFeatureclass(outPath, outFile, "POINT", "", "", "", )
+arcpy.management.CreateFeatureclass(outPath, outFile, "POINT", "", "", "", outputSR)
 
 #%% Construct a while loop to iterate through all lines in the datafile
 
