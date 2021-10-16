@@ -31,12 +31,21 @@ outputFC = "C:\\Users\\eniko\\Documents\\Duuuuuke\\2021-22\\Advanced GIS\\ARGOST
 
 # Create feature class to which we will add features
 outPath, outFile = os.path.split(outputFC)
-arcpy.management.CreateFeatureclass(outPath, outFile, "POINT", "", "", "", outputSR)
+arcpy.management.CreateFeatureclass(outPath, 
+                                    outFile, 
+                                    "POINT", 
+                                    "", 
+                                    "", 
+                                    "", 
+                                    outputSR)
 
 # Add TagID, LC, IQ, and Date fields to the output feature class
 arcpy.management.AddField(outputFC,"TagID","LONG")
 arcpy.management.AddField(outputFC,"LC","TEXT")
 arcpy.management.AddField(outputFC,"Date","DATE")
+
+# Create insert cursor
+cur = arcpy.da.InsertCursor(outputFC, ["SHAPE@", "TagID", "LC", "Date"])
 
 #%% Construct a while loop to iterate through all lines in the datafile
 
@@ -90,7 +99,17 @@ while lineString:
             obsPoint = arcpy.Point()
             obsPoint.X = obsLon
             obsPoint.Y = obsLat
-         
+            
+            # Convert point object to a geometry object with a spatial reference
+            inputSR = arcpy.SpatialReference(4326)
+            obsPointGeom = arcpy.PointGeometry(obsPoint,inputSR)
+            
+            # Insert feature into feature class
+            feature = cur.insertRow((obsPointGeom,
+                                 tagID,
+                                 loc,
+                                 date.replace(".","/") + " " + time))
+    
         # Handle any error
         except Exception as e:
             print(f"Error adding record {tagID} to the output: {e}")
@@ -100,3 +119,6 @@ while lineString:
     
 #Close the file object
 inputFileObj.close()
+
+#Delete the cursor
+del cur
