@@ -24,11 +24,16 @@ import sys, os, arcpy
 # Allow outputs to be overwritten
 arcpy.env.overwriteOutput = True
 
+# Set input variables (user input)
+inputFolder = arcpy.GetParameterAsText(0)
+outputSR = arcpy.GetParameterAsText(1)
+outputFC = arcpy.GetParameterAsText(2)
+
 # Set input variables (Hard-wired)
-inputFolder = "C:/Users/eniko/Documents/Duuuuuke/2021-22/Advanced GIS/ARGOSTracking/data/ARGOSdata"
-inputFile = 'C:\\Users\\eniko\\Documents\\Duuuuuke\\2021-22\\Advanced GIS\\ARGOSTracking\\data\\ARGOSdata\\1997dg.txt'
-outputSR = arcpy.SpatialReference(54002)
-outputFC = "C:\\Users\\eniko\\Documents\\Duuuuuke\\2021-22\\Advanced GIS\\ARGOSTracking\\scratch\\ARGOStrack.shp"
+#inputFolder = "C:/Users/eniko/Documents/Duuuuuke/2021-22/Advanced GIS/ARGOSTracking/data/ARGOSdata"
+#inputFile = 'C:\\Users\\eniko\\Documents\\Duuuuuke\\2021-22\\Advanced GIS\\ARGOSTracking\\data\\ARGOSdata\\1997dg.txt'
+#outputSR = arcpy.SpatialReference(54002)
+#outputFC = "C:\\Users\\eniko\\Documents\\Duuuuuke\\2021-22\\Advanced GIS\\ARGOSTracking\\scratch\\ARGOStrack.shp"
 
 # Create a list of files from input folder
 inputFiles = os.listdir(inputFolder)
@@ -59,7 +64,7 @@ for inputFile in inputFiles:
         continue
     
     # Give the user a status
-    print(f"Working on file {inputFile}")
+    arcpy.AddMessage(f"Working on file {inputFile}")
     
     # Prepend path onto input file
     inputFile = os.path.join(inputFolder, inputFile)
@@ -129,7 +134,7 @@ for inputFile in inputFiles:
         
             # Handle any error
             except Exception as e:
-                print(f"Error adding record {tagID} to the output: {e}")
+                arcpy.AddWarning(f"Error adding record {tagID} to the output: {e}")
             
         # Move to the next line so the while loop progresses
         lineString = inputFileObj.readline()
